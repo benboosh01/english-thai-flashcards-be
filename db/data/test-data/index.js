@@ -1,0 +1,1 @@
+exports.phrasesData = require("./phrases");
