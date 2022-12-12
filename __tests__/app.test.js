@@ -3,6 +3,7 @@ const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
 const app = require("../app");
 const request = require("supertest");
+const { v4: uuidv4 } = require("uuid");
 
 beforeEach(() => {
   return seed(testData);
@@ -26,6 +27,7 @@ describe("GET /api/phrases", () => {
 describe("POST /api/phrases", () => {
   test("status 201: successfully adds phrase and responds with new phrase object", () => {
     const newPhrase = {
+      id: uuidv4(),
       english: "money",
       thai: "ตังค์ (tang)",
     };

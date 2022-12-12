@@ -6,7 +6,7 @@ exports.selectAllPhrases = async () => {
 };
 
 exports.insertPhrase = async (newPhrase) => {
-  const { english, thai } = newPhrase;
+  const { id, english, thai } = newPhrase;
   if (!english || !thai) {
     return Promise.reject({
       status: 400,
@@ -14,8 +14,8 @@ exports.insertPhrase = async (newPhrase) => {
     });
   }
 
-  const queryStr = `INSERT INTO phrases (english, thai) VALUES ($1, $2) RETURNING *;`;
-  const queryVals = [english, thai];
+  const queryStr = `INSERT INTO phrases (id, english, thai) VALUES ($1, $2, $3) RETURNING *;`;
+  const queryVals = [id, english, thai];
   const result = await db.query(queryStr, queryVals);
   return result.rows[0];
 };
