@@ -15,7 +15,7 @@ app.all("*", (req, res) => {
   res.status(404).send({ msg: "invalid URL" });
 });
 
-app.use(errorHandlers.customError);
-app.use(errorHandlers.serverError);
+app.use(errorControllers.customError);
+app.use(errorControllers.serverError);
 
 module.exports = app;
