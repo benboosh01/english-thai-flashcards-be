@@ -19,7 +19,7 @@ describe("GET /api/phrases", () => {
       .get("/api/phrases")
       .expect(200)
       .then(({ body }) => {
-        expect(body.phrases.length).toBe(9);
+        expect(body.phrases.length).toBe(11);
       });
   });
 });
@@ -29,7 +29,9 @@ describe("POST /api/phrases", () => {
     const newPhrase = {
       id: uuidv4(),
       english: "money",
-      thai: "ตังค์ (tang)",
+      thai_script: "ตังค์",
+      thai_latin: "tang",
+      category: "shopping",
     };
     return request(app)
       .post("/api/phrases")
@@ -37,6 +39,24 @@ describe("POST /api/phrases", () => {
       .expect(201)
       .then(({ body }) => {
         expect(body.phrase).toEqual(newPhrase);
+      });
+  });
+  test("status 400: responds with error when new phrase is missing information", () => {
+    const newPhrase = {
+      id: uuidv4(),
+      english: "money",
+      thai_script: "ตังค์",
+      thai_latin: "tang",
+      category: "",
+    };
+    return request(app)
+      .post("/api/phrases")
+      .send(newPhrase)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe(
+          "missing details - please complete all fields and resubmit"
+        );
       });
   });
 });
