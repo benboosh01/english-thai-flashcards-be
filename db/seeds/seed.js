@@ -8,17 +8,24 @@ const seed = async ({ phrasesData }) => {
   const phrasesTablePromise = db.query(`CREATE TABLE phrases (
     id uuid PRIMARY KEY,
     english VARCHAR NOT NULL,
-    thai VARCHAR NOT NULL
+    thai_script VARCHAR NOT NULL,
+    thai_latin VARCHAR NOT NULL,
+    category VARCHAR NOT NULL
 );`);
 
   await phrasesTablePromise;
 
   const insertPhrasesQueryStr = format(
     `
-    INSERT INTO phrases (id, english, thai) VALUES %L RETURNING *;
-
+    INSERT INTO phrases (id, english, thai_script, thai_latin, category) VALUES %L RETURNING *;
   `,
-    phrasesData.map(({ english, thai }) => [uuid.v4(), english, thai])
+    phrasesData.map(({ english, thai_script, thai_latin, category }) => [
+      uuid.v4(),
+      english,
+      thai_script,
+      thai_latin,
+      category,
+    ])
   );
 
   const phrasesPromise = db
